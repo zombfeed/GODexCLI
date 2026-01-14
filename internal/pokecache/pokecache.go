@@ -1,7 +1,6 @@
 package pokecache
 
 import (
-	"fmt"
 	"sync"
 	"time"
 )
@@ -13,17 +12,17 @@ type Cache struct {
 
 func (c *Cache) Add(key string, val []byte) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	c.Cache[key] = cacheEntry{
 		createdAt: time.Now(),
 		val:       val,
 	}
+	defer c.mu.Unlock()
 }
 
 func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	entry, ok := c.Cache[key]
+	defer c.mu.Unlock()
 	if !ok {
 		return []byte{}, false
 	}
@@ -31,16 +30,20 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 }
 
 func (c *Cache) reapLoop(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	for range ticker.C {
+		c.Reap(time.Now(), interval)
+	}
+}
+
+func (c *Cache) Reap(now time.Time, interval time.Duration) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
-	for {
-		for key := range c.Cache {
-			if time.Since(c.Cache[key].createdAt) > interval {
-				delete(c.Cache, key)
-			}
-			fmt.Printf("%s is safe\n", key)
+	for key := range c.Cache {
+		if time.Since(c.Cache[key].createdAt) > interval {
+			delete(c.Cache, key)
 		}
 	}
+	defer c.mu.Unlock()
 }
 
 func NewCache(interval time.Duration) *Cache {
