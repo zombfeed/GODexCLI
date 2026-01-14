@@ -7,10 +7,12 @@ import (
 	"strings"
 
 	"github.com/zombfeed/godexcli/internal/pokeapi"
+	"github.com/zombfeed/godexcli/internal/pokecache"
 )
 
 type config struct {
 	pokeapiClient    pokeapi.Client
+	pokeCache        *pokecache.Cache
 	nextLocationsURL *string
 	prevLocationsURL *string
 }
