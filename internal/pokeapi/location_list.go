@@ -31,7 +31,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
-		return RespShallowLocations{}, fmt.Errorf("GET response not retrieved: %w", err)
+		return RespShallowLocations{}, fmt.Errorf("GET response not recieved %w", err)
 	}
 	defer res.Body.Close()
 
