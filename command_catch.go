@@ -17,7 +17,7 @@ func commandCatch(config *config, args ...string) error {
 		return err
 	}
 	fmt.Printf("Throwing a Pokeball at %s...\n", args[0])
-	if catchResp != (pokeapi.Pokemon{}) {
+	if !catchResp.IsEmpty() {
 		if caught := attemptCatch(catchResp); caught {
 			if _, ok := config.Pokedex[args[0]]; !ok {
 				config.Pokedex[args[0]] = catchResp
