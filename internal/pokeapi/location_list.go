@@ -13,7 +13,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 	if pageURL != nil {
 		url = *pageURL
 	}
-
+	fmt.Println(url)
 	if cachedLoc, ok := c.cache.Get(url); ok {
 		fmt.Println("Accessing Cached Locations...")
 		locationRes := RespShallowLocations{}
@@ -45,7 +45,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 	locationRes := RespShallowLocations{}
 	err = json.Unmarshal(dat, &locationRes)
 	if err != nil {
-		return RespShallowLocations{}, fmt.Errorf("failed to unmarshal data: %w", err)
+		return RespShallowLocations{}, fmt.Errorf("failed to unmarshal location-area data: %w", err)
 	}
 	return locationRes, nil
 }

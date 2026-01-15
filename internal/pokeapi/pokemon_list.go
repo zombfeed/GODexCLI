@@ -8,12 +8,11 @@ import (
 )
 
 func (c *Client) ListPokemon(location string) (RespShallowEncounters, error) {
-	url := baseURL + "/location-area" + location
-
 	if location == "" {
 		return RespShallowEncounters{}, fmt.Errorf("location-area not provided")
 	}
 
+	url := baseURL + "/location-area/" + location
 	if cachedEnc, ok := c.cache.Get(url); ok {
 		fmt.Println("Accessing Cached Encounters...")
 		encounterRes := RespShallowEncounters{}
@@ -21,7 +20,7 @@ func (c *Client) ListPokemon(location string) (RespShallowEncounters, error) {
 		if err != nil {
 			return RespShallowEncounters{}, fmt.Errorf("failed to unmarshal pokemon-encounter data: %w", err)
 		}
-		return RespShallowEncounters{}, nil
+		return encounterRes, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -40,6 +39,7 @@ func (c *Client) ListPokemon(location string) (RespShallowEncounters, error) {
 		return RespShallowEncounters{}, fmt.Errorf("failed to read response body: %w", err)
 	}
 
+	fmt.Println("Adding to Location Cache...")
 	c.cache.Add(url, dat)
 
 	encounterRes := RespShallowEncounters{}
