@@ -13,7 +13,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 	if pageURL != nil {
 		url = *pageURL
 	}
-	fmt.Println(url)
+
 	if cachedLoc, ok := c.cache.Get(url); ok {
 		fmt.Println("Accessing Cached Locations...")
 		locationRes := RespShallowLocations{}
