@@ -4,7 +4,7 @@ import "fmt"
 
 func commandExplore(config *config, args ...string) error {
 	if len(args) == 0 || len(args) > 1 {
-		return fmt.Errorf("invalid arguments")
+		return fmt.Errorf("invalid amount of arguments; expected call: 'explore <location_area_name>'")
 	}
 	encounterResp, err := config.pokeapiClient.ListPokemon(args[0])
 	if err != nil {

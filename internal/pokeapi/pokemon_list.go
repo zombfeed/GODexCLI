@@ -20,7 +20,7 @@ func (c *Client) ListPokemon(location string) (RespShallowEncounters, error) {
 		if err != nil {
 			return RespShallowEncounters{}, fmt.Errorf("failed to unmarshal pokemon-encounter data: %w", err)
 		}
-		return encounterRes, nil
+		return RespShallowEncounters{}, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -45,7 +45,7 @@ func (c *Client) ListPokemon(location string) (RespShallowEncounters, error) {
 	encounterRes := RespShallowEncounters{}
 	err = json.Unmarshal(dat, &encounterRes)
 	if err != nil {
-		return RespShallowEncounters{}, fmt.Errorf("failed to unmarshal pokemon-encounter data: %w")
+		return RespShallowEncounters{}, fmt.Errorf("failed to unmarshal pokemon-encounter data: %w", err)
 	}
 	return encounterRes, nil
 }
