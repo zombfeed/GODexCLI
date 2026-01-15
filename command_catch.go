@@ -22,6 +22,7 @@ func commandCatch(config *config, args ...string) error {
 			if _, ok := config.Pokedex[args[0]]; !ok {
 				config.Pokedex[args[0]] = catchResp
 			}
+			fmt.Println("You may now inspect it with the inspect command.")
 		}
 	}
 
